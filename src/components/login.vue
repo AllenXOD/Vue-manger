@@ -3,7 +3,13 @@
     <div class="box">
       <h2>用户登录</h2>
       <!-- model 表单数据 rules 验证规则 -->
-      <el-form label-width="80px" :model="loginForm" :rules="rules" label-position="top">
+      <el-form
+        label-width="80px"
+        :model="loginForm"
+        ref="loginForm"
+        :rules="rules"
+        label-position="top"
+      >
         <el-form-item label="用户名" prop="username">
           <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
@@ -11,7 +17,8 @@
           <el-input v-model="loginForm.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="my-btn" type="primary">登录</el-button>
+          <el-button type="primary" @click="login('loginForm')">登录</el-button>
+          <el-button type="success" @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -42,6 +49,24 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    login(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+            // 验证成功
+          alert("success");
+        } else {
+          // 验证失败
+          this.$message.error('数据格式错误, 请检查内容!')
+          return false;
+        }
+      });
+    },
+    // 重置
+    resetForm(formName) {
+        this.$refs[formName].resetFields();
+    }
   }
 };
 </script>
