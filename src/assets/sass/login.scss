@@ -1,0 +1,19 @@
+.login {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #324152;
+  .box {
+    width: 550px;
+    height: 420px;
+    padding: 35px;
+    // 怪异盒模型
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 10px;
+    .my-btn {
+      width: 100%;
+    }
+  }
+}
