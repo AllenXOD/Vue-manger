@@ -4,6 +4,7 @@ Vue.use(VueRouter)
 
 import login from './components/login.vue'
 import index from './components/index.vue'
+import user from './components/user.vue'
 
 const router = new VueRouter({
     routes: [
@@ -12,9 +13,19 @@ const router = new VueRouter({
             component: login
         },
         {
-            path: '/',
+            path: '/index',
             component: index
-        }
+        },
+        {
+            path: '/',
+            component: index,
+            children: [
+                {
+                    path: 'user',
+                    component: user
+                }
+            ]
+        },
     ]
 })
 
