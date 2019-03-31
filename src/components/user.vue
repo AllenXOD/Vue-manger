@@ -10,7 +10,7 @@
     <el-row>
       <el-col :span="8">
         <el-input placeholder="请输入内容" v-model="sendData.query" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
       </el-col>
       <el-col :span="12">
@@ -19,11 +19,15 @@
     </el-row>
     <!-- 表格 border边框 -->
     <el-table border :data="userList" style="width: 100%">
+      <!-- index顺序排序 -->
       <el-table-column type="index" label="#"></el-table-column>
-      <el-table-column prop="username" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
+      <!-- 普通数据使用prop绑定 -->
+      <el-table-column prop="id" label="id" width="60"></el-table-column>
+      <el-table-column prop="username" label="姓名" width="120"></el-table-column>
+      <el-table-column prop="role_name" label="类型" width="120"></el-table-column>
+      <el-table-column prop="email" label="邮箱" width="300"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
-      <el-table-column prop="mg_state" label="用户操作">
+      <el-table-column prop="mg_state" label="用户操作" width="80">
         <!-- scope只是一个名字 -->
         <template slot-scope="scope">
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
@@ -40,8 +44,8 @@
             @click="handleEdit(scope.$index, scope.row)"
             plain
           ></el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-          <el-button type="warning" size="mini" icon="el-icon-check"></el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" plain></el-button>
+          <el-button type="warning" size="mini" icon="el-icon-check" plain></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,6 +66,7 @@ export default {
     return {
       total: 0,
       sendData: {
+        // 搜索框输入数据
         query: "",
         pagenum: 1,
         pagesize: 10
@@ -75,18 +80,22 @@ export default {
     handleEdit(index, row) {
       console.log(index);
       console.log(row);
+    },
+    // 搜索用户
+    async search() {
+      let res = await this.$axios.get("users", {
+        headers: {
+          Authorization: window.sessionStorage.getItem("token")
+        },
+        params: this.sendData
+      });
+      // console.log(res);
+      this.total = res.data.data.total;
+      this.userList = res.data.data.users;
     }
   },
-  async created() {
-    let res = await this.$axios.get("users", {
-      headers: {
-        Authorization: window.sessionStorage.getItem("token")
-      },
-      params: this.sendData
-    });
-    // console.log(res);
-    this.total = res.data.data.total;
-    this.userList = res.data.data.users;
+  created() {
+    this.search();
   }
 };
 </script>
