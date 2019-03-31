@@ -9,7 +9,13 @@
     <!-- 输入框 -->
     <el-row>
       <el-col :span="8">
-        <el-input placeholder="请输入内容" v-model="sendData.query" class="input-with-select">
+        <!-- 组件中需要使用native将其 绑定原生事件 -->
+        <el-input
+          @keyup.native.enter="search"
+          placeholder="请输入内容"
+          v-model="sendData.query"
+          class="input-with-select"
+        >
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
       </el-col>
@@ -27,7 +33,7 @@
       <el-table-column prop="role_name" label="类型" width="120"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="300"></el-table-column>
       <el-table-column prop="mobile" label="电话"></el-table-column>
-      <el-table-column prop="mg_state" label="用户操作" width="80">
+      <el-table-column prop="mg_state" label="用户状态" width="80">
         <!-- scope只是一个名字 -->
         <template slot-scope="scope">
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
@@ -84,9 +90,6 @@ export default {
     // 搜索用户
     async search() {
       let res = await this.$axios.get("users", {
-        headers: {
-          Authorization: window.sessionStorage.getItem("token")
-        },
         params: this.sendData
       });
       // console.log(res);
