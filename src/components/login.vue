@@ -52,14 +52,22 @@ export default {
   },
   methods: {
     login(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           // 验证成功
-          //   alert("success");
-          location.href = '/';
-
+          let res = await this.$axios.post("login", this.loginForm);
+          // console.log(res);
+          if (res.data.meta.status === 400) {
+            this.$message.error(res.data.meta.msg);
+          } else if (res.data.meta.status === 200) {
+            this.$message.success(res.data.meta.msg);
+            // sessionStorage 一次会话保存
+            window.sessionStorage.setItem("token", res.data.data.token);
+            // 跳转
+            this.$router.push("/");
+          }
         } else {
-          // 验证失败
+          // 验证失败clear
           this.$message.error("数据格式错误, 请检查内容!");
           return false;
         }
