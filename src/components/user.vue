@@ -17,11 +17,33 @@
         <el-button type="success" plain>添加用户</el-button>
       </el-col>
     </el-row>
-    <!-- 表格 -->
-    <el-table :data="userList" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
+    <!-- 表格 border边框 -->
+    <el-table border :data="userList" style="width: 100%">
+      <el-table-column type="index" label="#"></el-table-column>
+      <el-table-column prop="username" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
+      <el-table-column prop="mobile" label="电话"></el-table-column>
+      <el-table-column prop="mg_state" label="用户操作">
+        <!-- scope只是一个名字 -->
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </template>
+      </el-table-column>
+      <!-- 自定义列 设置template 通过slot-scope 的值获取数据 -->
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <!-- 我们可以通过scope.$index 获取索引 scope.row获取这一行的数据 -->
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-edit"
+            @click="handleEdit(scope.$index, scope.row)"
+            plain
+          ></el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+          <el-button type="warning" size="mini" icon="el-icon-check"></el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination
@@ -48,6 +70,13 @@ export default {
       userList: []
     };
   },
+  methods: {
+    // 编辑编辑按钮
+    handleEdit(index, row) {
+      console.log(index);
+      console.log(row);
+    }
+  },
   async created() {
     let res = await this.$axios.get("users", {
       headers: {
@@ -55,7 +84,9 @@ export default {
       },
       params: this.sendData
     });
-    console.log(res);
+    // console.log(res);
+    this.total = res.data.data.total;
+    this.userList = res.data.data.users;
   }
 };
 </script>
