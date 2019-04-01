@@ -62,7 +62,7 @@ export default {
   },
   async created() {
     let res = await this.$axios.get("menus");
-    console.log(res);
+    // console.log(res);
     this.menuList = res.data.data;
   }
 };
