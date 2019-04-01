@@ -28,6 +28,10 @@ const router = new VueRouter({
             component: index,
             children: [
                 {
+                    path: '',
+                    redirect: 'users'
+                },
+                {
                     // 用户列表
                     path: 'users',
                     component: user
