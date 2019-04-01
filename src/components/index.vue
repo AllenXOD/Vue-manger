@@ -16,7 +16,7 @@
     <el-container class="my-container">
       <el-aside class="my-aside" width="200px">
         <!-- router 开启路由跳转 -->
-        <el-menu router default-active="2" class="el-menu-vertical-demo">
+        <el-menu router default-active="users" class="el-menu-vertical-demo">
           <el-submenu :index="item.id+''" v-for="(item,i) in menuList" :key="i">
             <template slot="title">
               <i class="el-icon-location"></i>

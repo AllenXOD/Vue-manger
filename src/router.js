@@ -23,6 +23,10 @@ const router = new VueRouter({
                 {
                     path: 'users',
                     component: user
+                },
+                {
+                    path: '',
+                    // component: 
                 }
             ]
         },

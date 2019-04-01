@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
+
 // 导入UI组件
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
@@ -8,6 +9,10 @@ Vue.use(ElementUI);
 import axios from "axios";
 // axios.defaults.baseURL
 axios.defaults.baseURL = "http://localhost:8888/api/private/v1/";
+
+// 全局注册面包屑
+import myBread from "./components/myBread.vue";
+Vue.component("my-bread", myBread);
 
 // 请求拦截器 在发送请求前对请求进行处理 <钩子>
 axios.interceptors.request.use(
