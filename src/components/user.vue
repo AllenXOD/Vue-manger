@@ -62,7 +62,13 @@
             @click="delOne(scope.row)"
             plain
           ></el-button>
-          <el-button type="warning" size="mini" icon="el-icon-check" plain></el-button>
+          <el-button
+            type="warning"
+            size="mini"
+            icon="el-icon-check"
+            @click="showRole(scope.row)"
+            plain
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,6 +119,26 @@
         <el-button type="primary" @click="submitEdit('editForm')">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 编辑用户权限 -->
+    <el-dialog title="编辑用户" :visible.sync="roleFormVisible">
+      <el-form ref="editForm">
+        <el-form-item label="当前用户" label-width="100px">{{ editUser.username }}</el-form-item>
+        <el-form-item label="请选择角色" label-width="100px">
+          <el-select v-model="editUser.role_name" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="roleFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitRole('editForm')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -134,6 +160,8 @@ export default {
       addFormVisible: false,
       // 显示编辑对话框
       editFormVisible: false,
+      // 显示编辑用户权限框
+      roleFormVisible: false,
       addForm: {
         username: "root",
         password: "123456",
@@ -145,6 +173,9 @@ export default {
         email: "root0@xd.cn",
         mobile: "18822255588"
       },
+      // 当前编辑的用户
+      editUser: {},
+      roleList: [],
       // 表单验证规则
       addRules: {
         username: [
@@ -187,7 +218,7 @@ export default {
         if (valid) {
           // alert("submit!");
           let res = await this.$axios.post("users", this.addForm);
-          console.log(res);
+          // console.log(res);
           if (res.data.meta.status === 201) {
             this.search();
           }
@@ -220,7 +251,7 @@ export default {
         });
     },
     // 保存修改
-    async submitEdit(formName) {
+    async submitEdit() {
       // 修改的字段可以为空 这个不用表单验证
       // 直接发请求即可
       let res = await this.$axios.put(`users/${this.editForm.id}`, {
@@ -233,6 +264,24 @@ export default {
       }
       // 关闭弹框
       this.editFormVisible = false;
+    },
+    // 用户权限框
+    async showRole(row) {
+      this.roleFormVisible = true;
+      this.editUser = row;
+      let res = await this.$axios.get("roles");
+      this.roleList = res.data.data;
+      // 获取银狐角色
+    },
+    async submitRole() {
+      // 获取角色&用户id
+      let res = await this.$axios.put(`users/${this.editUser.id}/role`, {
+        rid: this.editUser.role_name
+      });
+      if (res.data.meta.status === 200) {
+        this.roleFormVisible = false;
+        this.search();
+      }
     }
   },
   created() {

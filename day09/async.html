@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function makeP() {
+        return new Promise((resolve, reject) => {
+            setTimeout(()=>{
+                resolve('success');
+            },1000)
+        });
+      }
+    //   异步函数
+    async function renAsync() {
+        /* await
+            1. 调用了Promise对象的 .then方法
+            2. 把 .then方法中的回调函数获取的结果 赋予 await的左边
+            3. 其实 async和 await就是帮我们把使用Promise的语法简化了
+            4. 内部其实还是基于Promise 只是程序员不用写name多的代码了 编译器 帮我们做了这件事
+            5. 让程序员用很少的代码干较为复杂的事情 ---- 这种语法称之为 语法糖
+            6. 常见的语法糖
+                箭头函数 / let / const / 对象的快速赋值
+            7. 歧义
+                如果写的少干的多就算语法糖 jQuery Vue 都算
+                如果只有编译器级别的才算语法糖
+                    封装的不算 / 编译器原生支持才算
+         */
+        let res = await makeP();
+        // await不写 直接获取到的就是 Promise对象
+        console.log(res);
+    }
+    </script>
+  </body>
+</html>
