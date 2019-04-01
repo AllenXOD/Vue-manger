@@ -17,16 +17,16 @@
       <el-aside class="my-aside" width="200px">
         <!-- router 开启路由跳转 -->
         <el-menu router default-active="2" class="el-menu-vertical-demo">
-          <el-submenu index="1">
+          <el-submenu :index="item.id+''" v-for="(item,i) in menuList" :key="i">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{item.authName}}</span>
             </template>
             <el-menu-item-group>
               <!-- index 跳转的路径 -->
-              <el-menu-item index="/user">
+              <el-menu-item :index="it.path" v-for="(it,i) in item.children" :key="i">
                 <i class="el-icon-menu"></i>
-                用户中心
+                {{it.authName}}
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -43,6 +43,11 @@
 import "../assets/sass/index.scss";
 export default {
   name: "index",
+  data() {
+    return {
+      menuList: []
+    };
+  },
   methods: {
     logout() {
       window.sessionStorage.removeItem("token");
@@ -50,10 +55,15 @@ export default {
     }
   },
   beforeCreate() {
-    if(!window.sessionStorage.getItem('token')){
-      this.$message.error('请登录');
-      this.$router.push('/login');
+    if (!window.sessionStorage.getItem("token")) {
+      this.$message.error("请登录");
+      this.$router.push("/login");
     }
+  },
+  async created() {
+    let res = await this.$axios.get("menus");
+    console.log(res);
+    this.menuList = res.data.data;
   }
 };
 </script>

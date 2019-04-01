@@ -21,7 +21,7 @@ const router = new VueRouter({
             component: index,
             children: [
                 {
-                    path: 'user',
+                    path: 'users',
                     component: user
                 }
             ]

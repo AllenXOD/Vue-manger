@@ -154,7 +154,7 @@ export default {
         // 搜索框输入数据
         query: "",
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       // 用户信息数组
       userList: [],
