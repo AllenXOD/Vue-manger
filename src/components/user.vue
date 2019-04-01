@@ -78,6 +78,8 @@
       :page-size="sendData.pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
+      @current-change="currentChange"
+      @size-change="sizeChange"
     ></el-pagination>
 
     <!-- 弹框 -->
@@ -282,6 +284,16 @@ export default {
         this.roleFormVisible = false;
         this.search();
       }
+    },
+    // 页码改变
+    currentChange(current) {
+      this.sendData.pagenum = current;
+      this.search();
+    },
+    // 页容量改变
+    sizeChange(size) {
+      this.sendData.pagesize = size;
+      this.search();
     }
   },
   created() {
