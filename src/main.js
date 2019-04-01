@@ -5,6 +5,7 @@ import App from "./App.vue";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
+
 // axios
 import axios from "axios";
 // axios.defaults.baseURL
@@ -36,7 +37,6 @@ axios.interceptors.response.use(
     } else {
       Vue.prototype.$message.warning(response.data.meta.msg);
     }
-
     return response;
   },
   function(error) {
@@ -49,6 +49,7 @@ Vue.prototype.$axios = axios;
 // 全局样式
 import "./assets/sass/base.scss";
 
+// 路由
 import router from "./router.js";
 
 Vue.config.productionTip = false;

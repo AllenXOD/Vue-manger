@@ -142,7 +142,7 @@
 
 <script>
 export default {
-  name: "user",
+  name: "users",
   data() {
     return {
       total: 0,
