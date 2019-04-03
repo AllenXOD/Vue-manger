@@ -55,10 +55,6 @@ export default {
     }
   },
   beforeCreate() {
-    if (!window.sessionStorage.getItem("token")) {
-      this.$message.error("请登录");
-      this.$router.push("/login");
-    }
   },
   async created() {
     let res = await this.$axios.get("menus");
