@@ -1,7 +1,8 @@
 // axios
 import axios from "axios";
+import router from "./router";
 export default {
-    // 传入Vue的构造函数
+  // 传入Vue的构造函数
   install(Vue) {
     // axios.defaults.baseURL 基地址
     axios.defaults.baseURL = "http://localhost:8888/api/private/v1/";
@@ -22,6 +23,19 @@ export default {
     // 响应拦截器 同一处理对应
     axios.interceptors.response.use(
       function(response) {
+        // 非法token判断
+        if (
+          response.data.meta.msg === "无效token" &&
+          response.data.meta.status === 400
+        ) {
+          // 返回登陆页
+          Vue.prototype.$message.warning("token无效，返回登陆");
+          // 删除token
+          window.sessionStorage.removeItem("token");
+          router.push("/login");
+          return false;
+        }
+
         // 此方法是element-ui提供 所以必须先引入才能生效
         // response.data.meta.status === 200 || response.data.meta.status === 201 || response.data.meta.status === 204
         if ([200, 201, 204].indexOf(response.data.meta.status) != -1) {

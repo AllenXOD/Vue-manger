@@ -17,7 +17,11 @@ const router = new VueRouter({
   routes: [
     {
       path: "/login",
-      component: login
+      component: login,
+      //   路由元信息
+      meta: {
+        noLogin: true
+      }
     },
     {
       path: "/index",
@@ -83,15 +87,16 @@ const router = new VueRouter({
 */
 router.beforeEach((to, from, next) => {
   // console.log(to);
-  if (to.path == "/login") {
+  // 判断 to.path === '/login' 使用路由元信息进行判断
+  if (to.meta.noLogin) {
     //   如果不是去登录页则判断是否有token
     next();
   } else {
     if (window.sessionStorage.getItem("token")) {
       next();
     } else {
-        Vue.prototype.$message.error("请登录!");
-        next("/login");
+      Vue.prototype.$message.error("请登录!");
+      next("/login");
     }
   }
 });
