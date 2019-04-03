@@ -11,8 +11,10 @@
     "axios": "^0.18.0",
     "echarts": "^4.2.1",
     "element-ui": "^2.7.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "v-distpicker": "^1.2.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.2"
   },

@@ -13,6 +13,13 @@ Vue.component("my-bread", myBread);
 // 全局样式
 import "./assets/sass/base.scss";
 
+// 全局过滤器
+import moment from 'moment'
+Vue.filter('formatTime',(value, fomatTpl)=>{
+  // 格式时间
+  return moment(value).format(fomatTpl)
+})
+
 // 路由
 import router from "./router.js";
 
