@@ -13,6 +13,8 @@ import orders from "./components/orders.vue";
 import goods from "./components/goods.vue";
 import categories from "./components/categories.vue";
 
+import error from "./components/error.vue";
+
 const router = new VueRouter({
   routes: [
     {
@@ -25,7 +27,11 @@ const router = new VueRouter({
     },
     {
       path: "/index",
-      component: index
+      redirect: "/"
+    },
+    {
+      path: "/error",
+      component: error
     },
     {
       path: "/",
@@ -87,6 +93,11 @@ const router = new VueRouter({
 */
 router.beforeEach((to, from, next) => {
   // console.log(to);
+  // 没有匹配路由
+  if (to.matched.length === 0) {
+    Vue.prototype.$message.error("您所访问的路径不存在!");
+    next("/error");
+  }
   // 判断 to.path === '/login' 使用路由元信息进行判断
   if (to.meta.noLogin) {
     //   如果不是去登录页则判断是否有token
