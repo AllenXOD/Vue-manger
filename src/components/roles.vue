@@ -224,6 +224,9 @@ export default {
         this.getRoles();
         this.treeVisable = false;
       }
+      let menuRes = await this.$axios.get("menus");
+      // console.log(menuRes);
+      this.$store.commit("changeMenu", menuRes.data.data);
     }
   },
   created() {

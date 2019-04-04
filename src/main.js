@@ -27,9 +27,12 @@ import router from "./router.js";
 import myaxios from "./myaxios.js";
 Vue.use(myaxios);
 
+import store from './store'
+
 Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount("#app");

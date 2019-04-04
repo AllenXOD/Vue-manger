@@ -17,7 +17,7 @@
       <el-aside class="my-aside" width="200px">
         <!-- router 开启路由跳转 -->
         <el-menu router default-active="users" class="el-menu-vertical-demo">
-          <el-submenu :index="item.id+''" v-for="(item,i) in menuList" :key="i">
+          <el-submenu :index="item.id+''" v-for="(item,i) in $store.state.menuList" :key="i">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{item.authName}}</span>
@@ -59,7 +59,8 @@ export default {
   async created() {
     let res = await this.$axios.get("menus");
     // console.log(res);
-    this.menuList = res.data.data;
+    // this.menuList = res.data.data;
+    this.$store.commit('changeMenu',res.data.data);
   }
 };
 </script>
