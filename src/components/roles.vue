@@ -188,15 +188,25 @@ export default {
       let res = await this.$axios.get("rights/tree");
       this.rightList = res.data.data;
       let checkedKeys = [];
-      row.children.forEach(v=>{
-        checkedKeys.push(v.id);
-        v.children.forEach(v=>{
-          checkedKeys.push(v.id);
-          v.children.forEach(v=>{
+      // row.children.forEach(v=>{
+      //   checkedKeys.push(v.id);
+      //   v.children.forEach(v=>{
+      //     checkedKeys.push(v.id);
+      //     v.children.forEach(v=>{
+      //       checkedKeys.push(v.id);
+      //     })
+      //   })
+      // })
+      // 递归实现
+      function getcheckedKeys(item) {
+        if (item.children) {
+          item.children.forEach(v => {
             checkedKeys.push(v.id);
-          })
-        })
-      })
+            getcheckedKeys(v);
+          });
+        }
+      }
+      getcheckedKeys(row);
       this.checkedKeys = checkedKeys;
       this.treeFormVisible = true;
     }
