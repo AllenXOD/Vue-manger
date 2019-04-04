@@ -46,6 +46,7 @@
       <el-form :model="form">
         <!-- 省市联动插件 v-distpicker -->
         <el-form-item label="省市区" :label-width="formLabelWidth">
+          <!-- 本地数据实现省市区联动*/*/- -->
           <!-- <el-cascader :options="options" v-model="selectedOptions"></el-cascader> -->
           <v-distpicker></v-distpicker>
         </el-form-item>
@@ -62,7 +63,7 @@
 </template>
 
 <script>
-// import options from "";
+// import options from "本地数据文件";
 import VDistpicker from "v-distpicker";
 export default {
   name: "users",
@@ -75,7 +76,7 @@ export default {
       },
       total: 0,
       dialogFormVisible: false,
-      selectedOptions: [],
+      selectedOptions: []
     };
   },
   methods: {
