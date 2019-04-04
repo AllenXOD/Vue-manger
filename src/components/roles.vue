@@ -75,18 +75,19 @@
       </div>
     </el-dialog>
     <!-- 树形菜单 -->
-    <el-dialog title="f分配角色" :visible.sync="treeFormVisible">
+    <el-dialog title="分配角色" :visible.sync="treeVisable">
       <el-tree
         :data="rightList"
         show-checkbox
         node-key="id"
+        ref="tree"
         default-expand-all
         :default-checked-keys="checkedKeys"
         :props="defaultProps"
       ></el-tree>
       <div slot="footer" class="add-footer">
-        <el-button @click="treeFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submittree('')">确 定</el-button>
+        <el-button @click="treeVisable = false">取 消</el-button>
+        <el-button type="primary" @click="submitTree()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -100,7 +101,7 @@ export default {
       rolesList: [{}, {}],
       addFormVisible: false,
       editFormVisible: false,
-      treeFormVisible: false,
+      treeVisable: false,
       addForm: {
         roleName: "",
         roleDesc: ""
@@ -120,7 +121,9 @@ export default {
         label: "authName"
       },
       rightList: [],
-      checkedKeys: []
+      checkedKeys: [],
+      // 当前操作tree的角色
+      treeItem: {}
     };
   },
   methods: {
@@ -208,7 +211,19 @@ export default {
       }
       getcheckedKeys(row);
       this.checkedKeys = checkedKeys;
-      this.treeFormVisible = true;
+      this.treeVisable = true;
+      this.treeItem = row;
+    },
+    async submitTree() {
+      // 获取id
+      let rids = this.$refs.tree.getCheckedKeys().join(",");
+      let res = await this.$axios.post(`roles/${this.treeItem.id}/rights`, {
+        rids
+      });
+      if (res.data.meta.status === 200) {
+        this.getRoles();
+        this.treeVisable = false;
+      }
     }
   },
   created() {
