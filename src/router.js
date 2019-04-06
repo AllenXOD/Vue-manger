@@ -2,18 +2,32 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
-import login from "./components/login.vue";
-import index from "./components/index.vue";
-import user from "./components/user.vue";
-import roles from "./components/roles.vue";
-import rights from "./components/rights.vue";
-import reports from "./components/reports.vue";
-import params from "./components/params.vue";
-import orders from "./components/orders.vue";
-import goods from "./components/goods.vue";
-import categories from "./components/categories.vue";
+// import login from "./components/login.vue";
+// import index from "./components/index.vue";
+// import user from "./components/user.vue";
+// import roles from "./components/roles.vue";
+// import rights from "./components/rights.vue";
+// import reports from "./components/reports.vue";
+// import params from "./components/params.vue";
+// import orders from "./components/orders.vue";
+// import goods from "./components/goods.vue";
+// import categories from "./components/categories.vue";
 
-import error from "./components/error.vue";
+// import error from "./components/error.vue";
+
+// 路由懒加载
+const login = ()=>import( "./components/login.vue");
+const index = ()=>import( "./components/index.vue");
+const user = ()=>import( "./components/user.vue");
+const roles = ()=>import( "./components/roles.vue");
+const rights = ()=>import( "./components/rights.vue");
+const reports = ()=>import( "./components/reports.vue");
+const params = ()=>import( "./components/params.vue");
+const orders = ()=>import( "./components/orders.vue");
+const goods = ()=>import( "./components/goods.vue");
+const categories = ()=>import( "./components/categories.vue");
+
+const error =()=>import( "./components/error.vue");
 
 const router = new VueRouter({
   routes: [
