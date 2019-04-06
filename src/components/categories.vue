@@ -9,10 +9,22 @@
       </el-col>
     </el-row>
     <!-- 表格 -->
-    <el-table :data="cateList" style="width: 100%" border>
-      <el-table-column prop="username" label="分类名称" width="180"></el-table-column>
-      <el-table-column prop="email" label="级别" width="180"></el-table-column>
-      <el-table-column prop="mobile" label="是否有效"></el-table-column>
+    <el-table :data="cateList" style="width: 100%" border row-key="cat_id">
+      <!-- <el-table-column  type="expand"></el-table-column> -->
+      <el-table-column prop="cat_name" label="分类名称" width="180"></el-table-column>
+      <el-table-column prop="cat_level" label="级别" width="180">
+        <template slot-scope="scope">
+          <span v-if="scope.row.cat_level===0">一级</span>
+          <span v-else-if="scope.row.cat_level===1">二级</span>
+          <span v-else>三级</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="cat_deleted" label="是否有效">
+        <template slot-scope="scope">
+          <span v-if="scope.row.cat_deleted">无效</span>
+          <span v-else>有效</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作">
         <!-- scope 是一个名字 -->
@@ -22,17 +34,14 @@
             type="primary"
             size="mini"
             icon="el-icon-edit"
-          
             plain
           ></el-button>
           <el-button
-          
             type="danger"
             size="mini"
             icon="el-icon-delete"
             plain
           ></el-button>
-
         </template>
       </el-table-column>
     </el-table>
@@ -54,7 +63,14 @@ export default {
       cateList:[{},{}]
     }
   },
-
+  async created() {
+    let res = await this.$axios.get(`categories`,{
+      params: {
+        type: 3
+      }
+    });
+    this.cateList = res.data.data;
+  },
 };
 </script>
 

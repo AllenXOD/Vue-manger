@@ -28,9 +28,7 @@
           <el-table-column prop="attr_name" label="商品参数" width="180"></el-table-column>
           <el-table-column prop="attr_vals" label="参数值" width="180"></el-table-column>
           <el-table-column label="操作">
-            <!-- scope 是一个名字 -->
-            <template slot-scope="scope">
-              <!-- 我们可以通过scope.$index 获取索引 scope.row获取这一行的数据 -->
+            <template>
               <el-button type="primary" size="mini" icon="el-icon-edit" plain></el-button>
             </template>
           </el-table-column>
@@ -45,7 +43,7 @@
           <el-table-column prop="attr_vals" label="属性值" width="180"></el-table-column>
           <el-table-column label="操作">
             <!-- scope 是一个名字 -->
-            <template slot-scope="scope">
+            <template>
               <!-- 我们可以通过scope.$index 获取索引 scope.row获取这一行的数据 -->
               <el-button type="primary" size="mini" icon="el-icon-edit" plain></el-button>
             </template>
@@ -90,8 +88,6 @@ export default {
         this.dynamicList = res.data.data;
       }
     },
-    tabClick(tab) {
-    }
   },
   watch: {
     activeName(){
