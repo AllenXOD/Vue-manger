@@ -9,17 +9,24 @@
       <el-col :span="24">
         <span>请选择商品分类:&nbsp;&nbsp;</span>
         <!-- 级联选择器 -->
-        <el-cascader :props="props" expand-trigger="hover" :options="options" v-model="selectedOptions2"></el-cascader>
+        <el-cascader
+          @change="change"
+          :props="props"
+          expand-trigger="hover"
+          :options="options"
+          v-model="selectedOptions2"
+        ></el-cascader>
       </el-col>
     </el-row>
     <!-- tab栏 -->
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="动态参数" name="first">
+    <el-tabs v-model="activeName" @tab-click="tabClick">
+      <el-tab-pane label="动态参数" name="only">
         <el-button class="my-btn" type="primary" size="mini">添加动态参数</el-button>
         <!-- 表格 -->
         <el-table :data="dynamicList" style="width: 100%" border>
           <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column prop="username" label="商品参数" width="180"></el-table-column>
+          <el-table-column prop="attr_name" label="商品参数" width="180"></el-table-column>
+          <el-table-column prop="attr_vals" label="参数值" width="180"></el-table-column>
           <el-table-column label="操作">
             <!-- scope 是一个名字 -->
             <template slot-scope="scope">
@@ -29,13 +36,13 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="静态参数" name="second">
+      <el-tab-pane label="静态参数" name="many">
         <el-button class="my-btn" type="primary" size="mini" disabled>添加静态参数</el-button>
         <!-- 表格 -->
         <el-table :data="staticList" style="width: 100%" border>
           <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column prop="username" label="属性名称" width="180"></el-table-column>
-          <el-table-column prop="username" label="属性值" width="180"></el-table-column>
+          <el-table-column prop="attr_name" label="属性名称" width="180"></el-table-column>
+          <el-table-column prop="attr_vals" label="属性值" width="180"></el-table-column>
           <el-table-column label="操作">
             <!-- scope 是一个名字 -->
             <template slot-scope="scope">
@@ -57,17 +64,40 @@ export default {
       options: [],
       selectedOptions2: [],
       // tabs用到的数据
-      activeName: "first",
+      activeName: "many",
       // table的数据
       dynamicList: [{}, {}],
       staticList: [{}, {}],
       props: {
-        value: 'cat_id',
-        label: 'cat_name'
+        value: "cat_id",
+        label: "cat_name"
       }
     };
   },
-  methods: {},
+  methods: {
+    async change() {
+      let res = await this.$axios.get(
+        `categories/${this.selectedOptions2[2]}/attributes`,
+        {
+          params: {
+            sel: this.activeName
+          }
+        }
+      );
+      if (this.activeName === "only") {
+        this.staticList = res.data.data;
+      } else {
+        this.dynamicList = res.data.data;
+      }
+    },
+    tabClick(tab) {
+    }
+  },
+  watch: {
+    activeName(){
+      this.change();
+    }
+  },
   async created() {
     let res = await this.$axios.get("categories", {
       params: {
