@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "echarts": "^4.2.1",
-    "element-ui": "<2.6.0",
+    "element-ui": "^2.7.0",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",

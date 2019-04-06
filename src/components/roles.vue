@@ -10,12 +10,38 @@
     </el-row>
     <!-- 表格 border边框 -->
     <el-table border style="width: 100%" :data="rolesList">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-row class="my-row" v-for="level1 in props.row._children">
+            <el-col :span="6">
+              <el-tag @close="delTag(level1)" :key="level1.id" closable type="primary">{{level1.authName}}</el-tag>
+            </el-col>
+            <el-col :span="18">
+              <el-row v-for="level2 in level1.children">
+                <el-col :span="8">
+                  <el-tag @close="delTag(level2)" :key="level2.id" closable type="success">{{level2.authName}}</el-tag>
+                </el-col>
+                <el-col :span="16">
+                  <el-tag @close="delTag(level3)"
+                    class="my-tag"
+                    v-for="level3 in level2.children"
+                    :key="level2.id"
+                    closable
+                    type="warning"
+                  >{{level3.authName}}</el-tag>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </template>
+      </el-table-column>
       <!-- index顺序排序 -->
       <el-table-column type="index" label="#"></el-table-column>
       <!-- 普通数据使用prop绑定 -->
       <el-table-column prop="id" label="id" width="60"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="180"></el-table-column>
       <el-table-column prop="roleDesc" label="角色描述" width="180"></el-table-column>
+
       <!-- 自定义列 设置template 通过slot-scope 的值获取数据 -->
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -130,6 +156,12 @@ export default {
     async getRoles() {
       let res = await this.$axios.get("roles");
       // console.log(res);
+      // this.rolesList = res.data.data;
+      // 解决element的rowkey为题
+      res.data.data.forEach(v => {
+        v._children = v.children;
+        delete v.children;
+      });
       this.rolesList = res.data.data;
     },
     submitAdd(formName) {
@@ -227,6 +259,9 @@ export default {
       let menuRes = await this.$axios.get("menus");
       // console.log(menuRes);
       this.$store.commit("changeMenu", menuRes.data.data);
+    },
+    delTag(level){
+      
     }
   },
   created() {
@@ -238,5 +273,12 @@ export default {
 <style lang='scss'>
 .user-container {
   background-color: #eeeeff;
+}
+.my-row {
+  margin-bottom: 10px;
+}
+.my-tag {
+  margin-right: 15px;
+  margin-bottom: 5px;
 }
 </style>
