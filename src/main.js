@@ -3,7 +3,7 @@ import App from "./App.vue";
 
 // 导入UI组件
 import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
+// import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
 // 全局注册面包屑
